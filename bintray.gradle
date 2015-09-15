@@ -8,14 +8,21 @@ task sourcesJar(type: Jar) {
 }
 
 task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    description "app javadocs"
+    source = android.libraryVariants["release"].javaCompile.source
+    ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
+    classpath = files(android.libraryVariants["release"].javaCompile.classpath.files) + files(ext.androidJar)
+    options.links("http://docs.oracle.com/javase/7/docs/api/");
+    options.links("http://d.android.com/reference/");
+    exclude '**/BuildConfig.java'
+    exclude '**/R.java'
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
 }
+
 artifacts {
     archives javadocJar
     archives sourcesJar
@@ -33,11 +40,13 @@ bintray {
     pkg {
         repo = bintrayRepo
         name = bintrayName
+        userOrg = bintrayOrg
         desc = libraryDescription
         licenses = allLicenses
         publish = true
         publicDownloadNumbers = true
         version {
+            name = bintrayName
             desc = libraryDescription
         }
     }
