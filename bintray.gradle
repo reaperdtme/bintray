@@ -47,7 +47,7 @@ bintray {
         publicDownloadNumbers = false
         version {
             name = versionName
-            release = new java.util.Date()
+            released = new java.util.Date()
             desc = libraryDescription
             vcsTag = libraryVersion
         }
