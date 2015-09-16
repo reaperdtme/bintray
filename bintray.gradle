@@ -44,10 +44,12 @@ bintray {
         desc = libraryDescription
         licenses = allLicenses
         publish = true
-        publicDownloadNumbers = true
+        publicDownloadNumbers = false
         version {
-            name = bintrayName
+            name = versionName
+            release = new java.util.Date()
             desc = libraryDescription
+            vcsTag = libraryVersion
         }
     }
 }
